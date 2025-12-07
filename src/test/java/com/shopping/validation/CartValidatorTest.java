@@ -10,11 +10,6 @@ class CartValidatorTest {
     private final CartItemValidator validator = new CartItemValidator();
 
     @Test
-    void validateCartItem_validNameAndQuantity() {
-	assertDoesNotThrow(() -> validator.validateCartItem("cheerios", 1));
-    }
-
-    @Test
     void validateProductName_validName() {
 	assertDoesNotThrow(() -> validator.validateProductName("cornflakes"));
     }
@@ -34,35 +29,35 @@ class CartValidatorTest {
     @Test
     void validateCartItem_emptyName_shouldThrow() {
 	InvalidCartItemException ex = assertThrows(InvalidCartItemException.class,
-		() -> validator.validateCartItem("", 1));
+		() -> validator.validateProductName(""));
 	assertEquals("CartItem name cannot be empty", ex.getMessage());
     }
 
     @Test
     void validateCartItem_nullName_shouldThrow() {
 	InvalidCartItemException ex = assertThrows(InvalidCartItemException.class,
-		() -> validator.validateCartItem(null, 1));
+		() -> validator.validateProductName(null));
 	assertEquals("CartItem name cannot be empty", ex.getMessage());
     }
 
     @Test
     void validateCartItem_forbiddenChars_shouldThrow() {
 	InvalidCartItemException ex = assertThrows(InvalidCartItemException.class,
-		() -> validator.validateCartItem("cornflakes/2%", 1));
+		() -> validator.validateProductName("cornflakes/2%"));
 	assertEquals("CartItem name contains forbidden characters", ex.getMessage());
     }
 
     @Test
     void validateCartItem_zeroQuantity_shouldThrow() {
 	InvalidCartItemException ex = assertThrows(InvalidCartItemException.class,
-		() -> validator.validateCartItem("cornflakes", 0));
+		() -> validator.validateQuality("cornflakes", 0));
 	assertEquals("cornflakes is not a valid cart item.Quantity must be greater than zero", ex.getMessage());
     }
 
     @Test
     void validateCartItem_negativeQuantity_shouldThrow() {
 	InvalidCartItemException ex = assertThrows(InvalidCartItemException.class,
-		() -> validator.validateCartItem("cornflakes", -5));
+		() -> validator.validateQuality("cornflakes", -5));
 	assertEquals("cornflakes is not a valid cart item.Quantity must be greater than zero", ex.getMessage());
     }
 }

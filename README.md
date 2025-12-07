@@ -86,7 +86,6 @@
     The application integrates with an external Price API that returns product price details based on the product name. The API provides:  
     Product name
     Unit price
-    Currency information
 
 ## Testing
     The project includes comprehensive unit tests covering:  

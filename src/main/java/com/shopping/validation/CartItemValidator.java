@@ -5,11 +5,6 @@ import com.shopping.exception.InvalidCartItemException;
 public class CartItemValidator {
     private final String FORBIDDEN_PATTERN = ".*[/\\\\?%#*:<>|\".].*";
 
-    public void validateCartItem(String itemName, int quantity) {
-	validateProductName(itemName);
-	validateQuality(itemName, quantity);
-    }
-
     public void validateProductName(String itemName) {
 	if (null == itemName || itemName.trim().isEmpty()) {
 	    throw new InvalidCartItemException("CartItem name cannot be empty");
