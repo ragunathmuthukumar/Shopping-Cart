@@ -1,7 +1,7 @@
 package com.shopping.exception;
 
 public class PriceClientException extends RuntimeException {
-    public PriceClientException(String message) {
-	super(message);
+    public PriceClientException(String message,Exception e) {
+	super(message,e);
     }
 }

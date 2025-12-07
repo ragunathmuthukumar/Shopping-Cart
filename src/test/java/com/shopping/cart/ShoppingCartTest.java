@@ -161,6 +161,8 @@ class ShoppingCartTest {
 	try {
 	    cart.getProducts().clear();
 	} catch (UnsupportedOperationException e) {
+	    // Expected behavior: the product map is immutable, so clearing it should throw
+	    // an exception.
 	}
 	assertEquals(initialSize, cart.getProducts().size());
     }

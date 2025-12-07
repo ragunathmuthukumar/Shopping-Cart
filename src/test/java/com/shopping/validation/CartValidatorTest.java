@@ -16,13 +16,13 @@ class CartValidatorTest {
 
     @Test
     void validateQuality_validQuantity() {
-	assertDoesNotThrow(() -> validator.validateQuality("cornflakes", 2));
+	assertDoesNotThrow(() -> validator.validateQuantity("cornflakes", 2));
     }
 
     @Test
     void validateCartItem_with_supported_specialChar_shouldPass() {
-	assertDoesNotThrow(() -> validator.validateQuality("corn_flakes", 1));
-	assertDoesNotThrow(() -> validator.validateQuality("corn-flakes", 1));
+	assertDoesNotThrow(() -> validator.validateQuantity("corn_flakes", 1));
+	assertDoesNotThrow(() -> validator.validateQuantity("corn-flakes", 1));
     }
 
     // Negative test cases
@@ -50,14 +50,14 @@ class CartValidatorTest {
     @Test
     void validateCartItem_zeroQuantity_shouldThrow() {
 	InvalidCartItemException ex = assertThrows(InvalidCartItemException.class,
-		() -> validator.validateQuality("cornflakes", 0));
+		() -> validator.validateQuantity("cornflakes", 0));
 	assertEquals("cornflakes is not a valid cart item.Quantity must be greater than zero", ex.getMessage());
     }
 
     @Test
     void validateCartItem_negativeQuantity_shouldThrow() {
 	InvalidCartItemException ex = assertThrows(InvalidCartItemException.class,
-		() -> validator.validateQuality("cornflakes", -5));
+		() -> validator.validateQuantity("cornflakes", -5));
 	assertEquals("cornflakes is not a valid cart item.Quantity must be greater than zero", ex.getMessage());
     }
 }

@@ -1,13 +1,15 @@
 package com.shopping.cart;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.shopping.client.PriceClient;
 import com.shopping.validation.CartItemValidator;
 
 public class ShoppingCart {
+    private static final double TAX_RATE = 0.125;
+    private static final int ROUND_SCALE = 2;
     private final Map<String, CartItem> products;
     private final PriceClient pricingService;
     private final CartItemValidator cartItemValidator;
@@ -16,22 +18,22 @@ public class ShoppingCart {
     private double totalPrice;
 
     public ShoppingCart() {
-	products = new HashMap<>();
+	products = new ConcurrentHashMap<>();
 	pricingService = new PriceClient();
 	cartItemValidator = new CartItemValidator();
     }
 
     public void addProduct(String productName, int quantity) {
-	cartItemValidator.validateQuality(productName, quantity);
+	cartItemValidator.validateQuantity(productName, quantity);
 	addProductIntoCart(productName, quantity);
     }
 
     private void addProductIntoCart(String productName, int quantity) {
-	if (products.containsKey(productName)) {
+	if (null != productName && products.containsKey(productName)) {
 	    products.get(productName).addQuantity(quantity);
 	} else {
 	    double pricePerUnit = getProductUnitPrice(productName);
-	    products.put(productName, new CartItem(productName, quantity, pricePerUnit, 0.125));
+	    products.put(productName, new CartItem(productName, quantity, pricePerUnit, TAX_RATE));
 	}
 
 	if (!products.isEmpty()) {
@@ -78,7 +80,7 @@ public class ShoppingCart {
     }
 
     private double round(double value) {
-	double scale = Math.pow(10, 2);
+	double scale = Math.pow(10, ROUND_SCALE);
 	return Math.round(value * scale) / scale;
     }
 }

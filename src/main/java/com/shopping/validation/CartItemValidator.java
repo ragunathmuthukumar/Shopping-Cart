@@ -3,7 +3,7 @@ package com.shopping.validation;
 import com.shopping.exception.InvalidCartItemException;
 
 public class CartItemValidator {
-    private final String FORBIDDEN_PATTERN = ".*[/\\\\?%#*:<>|\".].*";
+    private static final String FORBIDDEN_PATTERN = ".*[/\\\\?%#*:<>|\".].*";
 
     public void validateProductName(String itemName) {
 	if (null == itemName || itemName.trim().isEmpty()) {
@@ -14,7 +14,7 @@ public class CartItemValidator {
 	}
     }
 
-    public void validateQuality(String itemName, int quantity) {
+    public void validateQuantity(String itemName, int quantity) {
 	if (quantity < 1) {
 	    throw new InvalidCartItemException(itemName, "Quantity must be greater than zero");
 	}
