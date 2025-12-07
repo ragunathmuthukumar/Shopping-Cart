@@ -4,37 +4,34 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ShoppingCart {
+import com.shopping.client.PriceClient;
+import com.shopping.validation.CartItemValidator;
 
-    private final Map<String, Product> products;
-    private final PricingService pricingService;
-    private final ProductService productService;
+public class ShoppingCart {
+    private final Map<String, CartItem> products;
+    private final PriceClient pricingService;
+    private final CartItemValidator cartItemValidator;
     private double subTotal;
     private double totalTaxes;
     private double totalPrice;
 
     public ShoppingCart() {
 	products = new HashMap<>();
-	pricingService = new PricingService();
-	productService = new ProductService();
+	pricingService = new PriceClient();
+	cartItemValidator = new CartItemValidator();
     }
 
-    public void addProduct(String productName, double quantity) {
-	try {
-	    productService.validateCartItem(productName, quantity);
-	    addProductIntoCart(productName, quantity);
-	} catch (Exception e) {
-	    System.out.println(
-		    "Error while adding product " + productName + " to shopping cart. Error " + e.getMessage());
-	}
+    public void addProduct(String productName, int quantity) {
+	cartItemValidator.validateCartItem(productName, quantity);
+	addProductIntoCart(productName, quantity);
     }
 
-    private void addProductIntoCart(String productName, double quantity) {
+    private void addProductIntoCart(String productName, int quantity) {
 	if (products.containsKey(productName)) {
 	    products.get(productName).addQuantity(quantity);
 	} else {
 	    double pricePerUnit = getProductUnitPrice(productName);
-	    products.put(productName, new Product(productName, quantity, pricePerUnit, 0.125));
+	    products.put(productName, new CartItem(productName, quantity, pricePerUnit, 0.125));
 	}
 
 	if (!products.isEmpty()) {
@@ -43,10 +40,10 @@ public class ShoppingCart {
     }
 
     private double getProductUnitPrice(String productName) {
-	return pricingService.getProductPrice(productName);
+	return pricingService.getPrice(productName);
     }
 
-    public Map<String, Product> getProducts() {
+    public Map<String, CartItem> getProducts() {
 	return Collections.unmodifiableMap(this.products);
     }
 
@@ -70,12 +67,12 @@ public class ShoppingCart {
 
     private void calculateSubTotal() {
 	subTotal = round(getProducts().values().stream()
-		.mapToDouble(product -> product.getPricePerUnit() * product.getQuantity()).sum());
+		.mapToDouble(cartItem -> cartItem.getPricePerUnit() * cartItem.getQuantity()).sum());
     }
 
     private void calculateTotalTaxes() {
 	totalTaxes = round(getProducts().values().stream()
-		.mapToDouble(product -> product.getPricePerUnit() * product.getQuantity() * product.getTaxRate())
+		.mapToDouble(cartItem -> cartItem.getPricePerUnit() * cartItem.getQuantity() * cartItem.getTaxRate())
 		.sum());
     }
 

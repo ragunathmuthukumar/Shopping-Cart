@@ -1,69 +1,103 @@
-# Shopping Cart
-   * This project is a Java-based shopping cart pricing service. 
-   * It provides product price retrieval via REST API calls and includes robust error handling and validation.
-   * The service is tested using JUnit and Mockito.
+# Shopping Cart Application
 
-# Features
-   * Retrieve product prices by product name.
-   * Validates product names for forbidden special characters.
-   * Handles missing products, malformed JSON, and network errors.
-   * Unit tests for all major scenarios.
+   * A Java-based shopping cart application that integrates with a Price API to calculate cart totals with tax.
 
-# Technologies Used
-   1. Java
-   2. Gradle
-   3. JUnit 5
-   4. Mockito
-   5. Java HTTP Client
-   6. Jackson (for JSON parsing)
+## Overview
 
-# Usage
-   1. Add products and prices to your pricing API or mock data.
-   2. Call getPrices(String productName) to retrieve the price for a product.
-   3. Error Handling: Throws RuntimeException for invalid product names, unavailable products, malformed JSON, or network issues.
+   * This project provides a robust shopping cart implementation with price retrieval, validation, error handling, and tax calculation capabilities. The application integrates with an external Price API to fetch product prices and calculate cart totals.
 
+## Features
 
-# Error Handling:
-   * Throws RuntimeException for invalid product names, unavailable products, malformed JSON, or network issues.
+   - Add items to cart with quantity management
+   - Retrieve product prices from Price API
+   - Automatic subtotal and tax calculation
+   - Duplicate item quantity aggregation
+   - Comprehensive input validation
+   - Robust error handling
+   - Extensive unit test coverage
 
-# Validation
-   * Product names must not contain these forbidden characters: / \ ? % # * : < > | " .  
+## Technologies Used
 
-# Testing
-   * Run unit tests using Gradle: gradle test
+   - **Java** - Core programming language
+   - **Gradle** - Build automation tool
+   - **JUnit 5** - Testing framework
+   - **Java HTTP Client** - API communication
+   - **Jackson** - JSON parsing and serialization
 
-## Project Structure
-   * com.shopping.cart.ProductPrice - Model for product price.
-   * com.shopping.cart.PricingService - Main service logic.
-   * com.shopping.cart.test.PricingServiceTest - Unit tests.
+## Validation Rules
+
+### Product Name Validation
+   - Must not be null or empty
+   - Cannot contain forbidden special characters: `/ \ ? % # * : < > | "`
+
+### Cart Item Validation
+   - Quantity must be greater than 0
+
+## Error Handling
+
+   * The application includes three custom exception types:
+
+     - `InvalidCartItemException` - Thrown for invalid product names or quantities
+     - `ProductNotFoundException` - Thrown when a product is not available in the Price API
+     - `PriceClientException` - Thrown for malformed JSON or network issues during API calls
+
+## Available Products
+
+   - `cheerios`
+   - `cornflakes`
+   - `frosties`
+   - `shreddies`
+   - `weetabix`
 
 ## Setup
-   1. Clone the repository.
-   2. Run gradle build to compile.
-   3. Run gradle test to execute tests.
 
-## Price API
+1. **Clone the repository**
+    git clone <repository-url>
+    cd shopping-cart
 
-The price API is an existing API that returns the price details for a product, identified by it's name. The shopping cart should integrate with the price API to retrieve product prices. 
+2. **Build the project**
+    gradle build
 
-# List of available products
-  * `cheerios`
-  * `cornflakes`
-  * `frosties`
-  * `shreddies`
-  * `weetabix`
+3. **Run tests**
+    gradle test
 
-## Example
-The below is a sample with the correct values you can use to confirm your calculations
+## Usage Example
+    Adding Items to Cart q
+    
+    ShoppingCart cart = new ShoppingCart();
+    
+    // Add 1 × cornflakes @ 2.52 each
+    cart.addItem("cornflakes", 1);
+    
+    // Add another 1 × cornflakes @ 2.52 each
+    cart.addItem("cornflakes", 1);
+    
+    // Add 1 × weetabix @ 9.98 each
+    cart.addItem("weetabix", 1);
 
-### Inputs
-* Add 1 × cornflakes @ 2.52 each
-* Add another 1 x cornflakes @2.52 each
-* Add 1 × weetabix @ 9.98 each
-  
-### Results  
-* Cart contains 2 x cornflakes
-* Cart contains 1 x weetabix
-* Subtotal = 15.02
-* Tax = 1.88
-* Total = 16.90
+## Expected Results
+    Cart contains 2 × cornflakes
+    Cart contains 1 × weetabix
+    Subtotal = 15.02
+    Tax = 1.88
+    Total = 16.90
+    
+## Price API Integration
+    The application integrates with an external Price API that returns product price details based on the product name. The API provides:  
+    Product name
+    Unit price
+    Currency information
+
+## Testing
+    The project includes comprehensive unit tests covering:  
+    Valid cart operations
+    Invalid product names
+    Invalid quantities
+    Product not found scenarios
+    API error handling
+    Tax calculation accuracy
+    
+## Tax Calculation
+    Tax rate: 12.5%
+    Tax is calculated on the subtotal
+    Final total = Subtotal + Tax
