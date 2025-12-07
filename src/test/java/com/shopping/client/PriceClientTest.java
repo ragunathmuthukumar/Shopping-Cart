@@ -37,6 +37,13 @@ class PriceClientTest {
     }
 
     @Test
+    void testGetPrice_Supported_Characters() {
+	assertThrows(ProductNotFoundException.class, () -> priceClient.getPrice("cheerios_"));
+	assertThrows(ProductNotFoundException.class, () -> priceClient.getPrice("corn_flakes"));
+	assertThrows(ProductNotFoundException.class, () -> priceClient.getPrice("corn-flakes"));
+    }
+
+    @Test
     void testGetPrice_ForbiddenCharacters() {
 	assertThrows(InvalidCartItemException.class, () -> priceClient.getPrice("cheerios/"));
 	assertThrows(InvalidCartItemException.class, () -> priceClient.getPrice("corn:flakes"));

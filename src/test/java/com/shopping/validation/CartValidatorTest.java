@@ -24,6 +24,12 @@ class CartValidatorTest {
 	assertDoesNotThrow(() -> validator.validateQuality("cornflakes", 2));
     }
 
+    @Test
+    void validateCartItem_with_supported_specialChar_shouldPass() {
+	assertDoesNotThrow(() -> validator.validateQuality("corn_flakes", 1));
+	assertDoesNotThrow(() -> validator.validateQuality("corn-flakes", 1));
+    }
+
     // Negative test cases
     @Test
     void validateCartItem_emptyName_shouldThrow() {

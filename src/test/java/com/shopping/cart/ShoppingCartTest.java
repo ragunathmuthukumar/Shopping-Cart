@@ -83,6 +83,26 @@ class ShoppingCartTest {
     }
 
     @Test
+    void testGetPrice_Supported_Characters_And_Valid_Product() {
+	assertThrows(ProductNotFoundException.class, () -> cart.addProduct("corn_flakes", 1));
+	assertEquals(0, cart.getProducts().size());
+	assertThrows(ProductNotFoundException.class, () -> cart.addProduct("corn-flakes", 1));
+	assertEquals(0, cart.getProducts().size());
+	assertDoesNotThrow(() -> cart.addProduct("cheerios", 1));
+	assertEquals(1, cart.getProducts().size());
+    }
+
+    @Test
+    void testGetPrice_Supported_Characters() {
+	assertThrows(ProductNotFoundException.class, () -> cart.addProduct("cheerios_", 1));
+	assertEquals(0, cart.getProducts().size());
+	assertThrows(ProductNotFoundException.class, () -> cart.addProduct("corn_flakes", 1));
+	assertEquals(0, cart.getProducts().size());
+	assertThrows(ProductNotFoundException.class, () -> cart.addProduct("corn-flakes", 1));
+	assertEquals(0, cart.getProducts().size());
+    }
+
+    @Test
     void testAddProductWithInvalidName() {
 	assertThrows(InvalidCartItemException.class, () -> cart.addProduct("cornflakes/", 1));
 	assertEquals(0, cart.getProducts().size());

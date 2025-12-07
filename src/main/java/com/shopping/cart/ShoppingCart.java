@@ -66,18 +66,15 @@ public class ShoppingCart {
     }
 
     private void calculateSubTotal() {
-	subTotal = round(getProducts().values().stream()
-		.mapToDouble(cartItem -> cartItem.getPricePerUnit() * cartItem.getQuantity()).sum());
+	subTotal = round(getProducts().values().stream().mapToDouble(CartItem::getItemTotalPrice).sum());
     }
 
     private void calculateTotalTaxes() {
-	totalTaxes = round(getProducts().values().stream()
-		.mapToDouble(cartItem -> cartItem.getPricePerUnit() * cartItem.getQuantity() * cartItem.getTaxRate())
-		.sum());
+	totalTaxes = round(getProducts().values().stream().mapToDouble(CartItem::getItemTotaltax).sum());
     }
 
     private void calculateTotalPrice() {
-	totalPrice = round(subTotal + totalTaxes);
+	totalPrice = round(getProducts().values().stream().mapToDouble(CartItem::getItemTotalPriceWithTax).sum());
     }
 
     private double round(double value) {
