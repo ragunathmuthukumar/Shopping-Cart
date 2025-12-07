@@ -22,7 +22,7 @@ public class ShoppingCart {
     }
 
     public void addProduct(String productName, int quantity) {
-	cartItemValidator.validateCartItem(productName, quantity);
+	cartItemValidator.validateQuality(productName, quantity);
 	addProductIntoCart(productName, quantity);
     }
 
